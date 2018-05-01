@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="RefTrackerPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>DatabaseClasses.UserType</class>
+    <class>DatabaseClasses.Refugee</class>
+    <class>DatabaseClasses.RelativeType</class>
+    <class>DatabaseClasses.Transfer</class>
+    <class>DatabaseClasses.CampSite</class>
+    <class>DatabaseClasses.TentType</class>
+    <class>DatabaseClasses.CampType</class>
+    <class>DatabaseClasses.Users</class>
+    <class>DatabaseClasses.Tent</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7235738"/>
+      <property name="javax.persistence.jdbc.user" value="sql7235738"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="KBcuSxavlA"/>
+    </properties>
+  </persistence-unit>
+</persistence>
