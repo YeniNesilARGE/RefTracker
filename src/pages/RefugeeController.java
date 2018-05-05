@@ -3,11 +3,15 @@ package pages;
 import DatabaseClasses.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javax.persistence.TypedQuery;
 import tableObjects.RefugeeTable;
@@ -23,15 +27,18 @@ public class RefugeeController {
     
     
     int campId;
-    private ArrayList<RefugeeTable> refugees = new ArrayList();
+    
+    private ObservableList<RefugeeTable> refugees = FXCollections.observableArrayList();
 
-    public ArrayList<RefugeeTable> getRefugees() {
+    public ObservableList<RefugeeTable> getRefugees() {
         return refugees;
     }
 
-    public void setRefugees(ArrayList<RefugeeTable> refugees) {
+    public void setRefugees(ObservableList<RefugeeTable> refugees) {
         this.refugees = refugees;
     }
+    
+    
 
     
     
@@ -58,7 +65,7 @@ public class RefugeeController {
     }
 
     public void setColumns() {
-
+        
         TableColumn name = new TableColumn("First Name");
         TableColumn lastName = new TableColumn("Last Name");
         TableColumn nationality = new TableColumn("Nationality");
@@ -67,8 +74,19 @@ public class RefugeeController {
         TableColumn gender = new TableColumn("Gender");
         TableColumn alive = new TableColumn("Alive");
         
+        name.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("name"));
+        lastName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("surName"));
+        nationality.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("nation"));
+        campName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("campName"));
+        tentName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("tentName"));
+        gender.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("gender"));
+        alive.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("alive"));
+        
+        
+        
+        refugeesTable.getColumns().clear();
         refugeesTable.getColumns ().addAll(name, lastName, nationality,campName,tentName,gender,alive);
-        refugeesTable.getItems().addAll(getRefugees());
+        refugeesTable.setItems(refugees);
         
     }
 
