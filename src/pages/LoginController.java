@@ -28,7 +28,7 @@ public class LoginController {
     @FXML
     private Label label;
 
-    private DatabaseConnection dbConnection = new DatabaseConnection();
+    static DatabaseConnection dbConnection = new DatabaseConnection();
 
     @FXML
     private void mouseClicked(MouseEvent event) {
@@ -38,21 +38,15 @@ public class LoginController {
             TypedQuery<Users> q1 = dbConnection.getEm().createQuery("SELECT u FROM Users u",Users.class);
             List<Users> l =  q1.getResultList();
             
-            //ArrayList<Users> users = new ArrayList<>();
-            //Collections.copy(users, l);
             
-            //ArrayList<Users> ls = new ArrayList<Users>(l);
             System.out.println("DB ye baglandim");
             String userName = uId.getText();
             String pass = uPass.getText();
             for (int i = 0; i < l.size(); i++) {
             
-                /*String u =  l.get(i).getUsername().toString();
-                String p = l.get(i).getPass().toString();
-                */
             if (userName.equals((String)l.get(i).getUsername()) && pass.equals((String)l.get(i).getPass())){
                     label.setText("Giriş Başarılı");
-                    sceneTransition("Refugee.fxml");
+                    sceneTransition("Tents.fxml");
                     break;
                 }
             }
