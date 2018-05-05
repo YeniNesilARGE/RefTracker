@@ -1,4 +1,4 @@
-package src.loginpage;
+package pages;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,18 +7,28 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Login extends Application{
+    
+   public static Stage stage;
+   
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
    
    @Override 
    public void start(Stage s) {
       s.setTitle("Sample FXML Program");
-      s.setWidth(800);
-      s.setHeight(600);
       try{
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-      AnchorPane root = loader.load();
-      Scene scene = new Scene(root);
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("Login.fxml")) ;
+      Parent roott = loader.load();
+      Scene scene = new Scene(roott);
       s.setScene(scene);
       s.show();
+      setStage(s);
       }catch(Exception ex){
         ex.printStackTrace();
       }

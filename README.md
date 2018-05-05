@@ -16,7 +16,15 @@ This process will give you a "jar" file. You can execute jar file with following
 java -jar RefTracker.jar
 ```
 
+EclipseLink (JPA 2.1) and Mysql-Connector-Java libraries must be added
+
+https://dev.mysql.com/downloads/connector/j/
+
+http://www.eclipse.org/eclipselink/downloads/
+
+
 Done! You made it!
+
 
 ## Authors
 
