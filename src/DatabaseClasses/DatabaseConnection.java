@@ -27,7 +27,6 @@ public class DatabaseConnection {
     public void exitDb(){
         emf.close();
     }
-
     public EntityManagerFactory getEmf() {
         return emf;
     }
@@ -35,5 +34,4 @@ public class DatabaseConnection {
     public void setEmf(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
 }
