@@ -4,6 +4,8 @@ import DatabaseClasses.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,7 +64,7 @@ public class TentsController {
             TypedQuery<Refugee> q1 = LoginController.dbConnection.getEm().createQuery("SELECT r FROM Refugee r WHERE r.campId ='" + cId + "'" , Refugee.class);
             List<Refugee> l = q1.getResultList();
             
-            ArrayList<RefugeeTable> rList = new ArrayList<>();
+            ObservableList<RefugeeTable> rList = FXCollections.observableArrayList();
             
             for (int i = 0; i < l.size(); i++) {
                 rList.add(new RefugeeTable(l.get(i).getName(),l.get(i).getSurname(),l.get(i).getNationality(),
