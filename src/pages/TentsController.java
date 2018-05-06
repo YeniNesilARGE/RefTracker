@@ -2,7 +2,6 @@ package pages;
 
 import DatabaseClasses.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import tableObjects.RefugeeTable;
 
@@ -60,17 +60,17 @@ public class TentsController {
                 System.out.println(ex);
             }
             RefugeeController rc = Loader.getController();
-            
-            TypedQuery<Refugee> q1 = LoginController.dbConnection.getEm().createQuery("SELECT r FROM Refugee r WHERE r.campId ='" + cId + "'" , Refugee.class);
+            EntityManager em = LoginController.dbConnection.newEntityManager();
+            TypedQuery<Refugee> q1 = em.createQuery("SELECT r FROM Refugee r WHERE r.campId ='" + cId + "'" , Refugee.class);
             List<Refugee> l = q1.getResultList();
             
             ObservableList<RefugeeTable> rList = FXCollections.observableArrayList();
             
             for (int i = 0; i < l.size(); i++) {
                 rList.add(new RefugeeTable(l.get(i).getName(),l.get(i).getSurname(),l.get(i).getNationality(),
-                        rc.findCampName(l.get(i)) , rc.findTentName(l.get(i)), rc.findGender(l.get(i)), rc.findIsAlive(l.get(i))));
+                        rc.findCampName(l.get(i)) , rc.findTentName(l.get(i)), l.get(i).getSocialId(), rc.findGender(l.get(i)), rc.findIsAlive(l.get(i))));
             }
-            
+            em.close();
             rc.setRefugees(rList);
             rc.setColumns();
             rc.setCampId(cId);
