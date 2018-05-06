@@ -40,14 +40,14 @@ public class TentsController {
     }
 
     @FXML
-    private void findClicked(MouseEvent event) {
+    public void findClicked(MouseEvent event) {
         //find camp
 
         //tıklanan camp id'si örneğin 1 olsun.
         //detay'a tıklandıktan sonra sığınmacıların tablosu gelecek bu yüzden refugeecontroller sınıfındaki değişken değerlerinin parametreleri
         //buradan yollanmalı
         int cId = 1;
-
+        int tentId=1;
         //hangi kampa tıklanıldığı bedirhan tarafından kontrol edilecek
         try {
 
@@ -70,11 +70,15 @@ public class TentsController {
                 rList.add(new RefugeeTable(l.get(i).getName(),l.get(i).getSurname(),l.get(i).getNationality(),
                         rc.findCampName(l.get(i)) , rc.findTentName(l.get(i)), rc.findGender(l.get(i)), rc.findIsAlive(l.get(i))));
             }
+            
             rc.setRefugees(rList);
             rc.setColumns();
+            rc.setCampId(cId);
+            rc.setTentId(tentId);
             Parent p = Loader.getRoot();
             Stage s = new Stage();
             s.setScene(new Scene(p));
+            rc.setRefugeeStage(s);
             s.showAndWait();
             
         } catch (Exception ex) {

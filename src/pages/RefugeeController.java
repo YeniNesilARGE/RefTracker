@@ -1,18 +1,21 @@
 package pages;
 
 import DatabaseClasses.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javax.persistence.TypedQuery;
 import tableObjects.RefugeeTable;
 
@@ -25,8 +28,26 @@ public class RefugeeController {
     @FXML
     private Button refugeeDetailButton;
     
-    
     int campId;
+    int tentId;
+    
+    Stage refugeeStage;
+
+    public Stage getRefugeeStage() {
+        return refugeeStage;
+    }
+
+    public void setRefugeeStage(Stage refugeeStage) {
+        this.refugeeStage = refugeeStage;
+    }
+
+    public int getTentId() {
+        return tentId;
+    }
+
+    public void setTentId(int tentId) {
+        this.tentId = tentId;
+    }
     
     private ObservableList<RefugeeTable> refugees = FXCollections.observableArrayList();
 
@@ -37,12 +58,7 @@ public class RefugeeController {
     public void setRefugees(ObservableList<RefugeeTable> refugees) {
         this.refugees = refugees;
     }
-    
-    
 
-    
-    
-    
     public int getCampId() {
         return campId;
     }
@@ -51,12 +67,27 @@ public class RefugeeController {
         this.campId = campId;
     }
     
-    
-    
     //CADIR ID'SI GELIR VE SIGINMACILAR LISTELENIR
     @FXML
     private void addClicked(MouseEvent event) {
-        //add refugee
+        
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("AddRefugee.fxml"));
+            try{
+                Loader.load();
+            }catch(IOException ex){
+                System.out.println(ex);
+            }
+            AddRefugeeController arc = Loader.getController();
+            arc.setcId(campId);
+            arc.settId(tentId);
+            arc.setRc(this);
+            Parent p = Loader.getRoot();
+            Stage s = new Stage();
+            s.setScene(new Scene(p));
+            arc.setS(s);
+            s.show();
+            refugeeStage.close();
     }
 
     @FXML
@@ -82,25 +113,16 @@ public class RefugeeController {
         gender.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("gender"));
         alive.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("alive"));
         
-        
-        
         refugeesTable.getColumns().clear();
         refugeesTable.getColumns ().addAll(name, lastName, nationality,campName,tentName,gender,alive);
         refugeesTable.setItems(refugees);
-        
     }
-
-    
-
-    
-
    public String findCampName(Refugee r) {
         int campId = r.getCampId();
         TypedQuery<CampSite> q1 = LoginController.dbConnection.getEm().createQuery("SELECT c FROM CampSite c WHERE c.id = '" + campId + "'", CampSite.class);
         CampSite c = q1.getSingleResult();
         return c.getLocation()+"/"+c.getName();
     }
-
     public String findTentName(Refugee r) {
         int tentId = r.getTentId();
         TypedQuery<Tent> q1 = LoginController.dbConnection.getEm().createQuery("SELECT t FROM Tent t WHERE t.id ='" + tentId + "'", Tent.class);
