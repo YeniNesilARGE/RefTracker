@@ -70,6 +70,7 @@ public class TentsController {
                 rList.add(new RefugeeTable(l.get(i).getName(),l.get(i).getSurname(),l.get(i).getNationality(),
                         rc.findCampName(l.get(i)) , rc.findTentName(l.get(i)), l.get(i).getSocialId(), rc.findGender(l.get(i)), rc.findIsAlive(l.get(i))));
             }
+            
             em.close();
             rc.setRefugees(rList);
             rc.setColumns();

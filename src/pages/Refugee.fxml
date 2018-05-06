@@ -16,7 +16,6 @@
         </columns>
       </TableView>
       <Button fx:id="addRefugeeButton" layoutX="463.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addClicked" text="Add Refugee" />
-      <Button fx:id="refugeeDetailButton" layoutX="367.0" layoutY="354.0" mnemonicParsing="false" onMouseClicked="#detailClicked" text="Detail" />
-      <Button fx:id="editBtn" layoutX="463.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#editRef" prefHeight="25.0" prefWidth="85.0" text="Edit" />
+      <Button fx:id="editBtn" layoutX="310.0" layoutY="354.0" mnemonicParsing="false" onMouseClicked="#editRef" prefHeight="25.0" prefWidth="104.0" text="Refugee Detail" />
    </children>
 </AnchorPane>
