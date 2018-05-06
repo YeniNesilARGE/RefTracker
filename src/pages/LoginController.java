@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -35,7 +36,8 @@ public class LoginController {
         try {
             
             dbConnection.connDb();
-            TypedQuery<Users> q1 = dbConnection.getEm().createQuery("SELECT u FROM Users u",Users.class);
+            EntityManager em = LoginController.dbConnection.newEntityManager();
+            TypedQuery<Users> q1 = em.createQuery("SELECT u FROM Users u",Users.class);
             List<Users> l =  q1.getResultList();
             
             
@@ -50,7 +52,8 @@ public class LoginController {
                     break;
                 }
             }
-
+            em.close();
+                
         } catch (Exception ex) {
             System.out.println("DB YE BAGLANAMADIM" + ex);
         }

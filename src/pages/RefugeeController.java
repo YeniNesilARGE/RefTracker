@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import tableObjects.RefugeeTable;
 
@@ -92,9 +93,40 @@ public class RefugeeController {
 
     @FXML
     private void detailClicked(MouseEvent event) {
-        //refugee detail
+        RefugeeTable rt = refugeesTable.getSelectionModel().getSelectedItem();
+        System.out.println(rt.getName()+ "--" + rt.getSurName());
     }
 
+    @FXML
+    private void editRef(MouseEvent event) {
+        
+        RefugeeTable rt = refugeesTable.getSelectionModel().getSelectedItem();
+        System.out.println(rt.getName()+ "--" + rt.getSurName());
+        String socialId = rt.getSocialId(); 
+        EntityManager em = LoginController.dbConnection.newEntityManager();
+        TypedQuery<Refugee> q1 = em.createQuery("SELECT r FROM Refugee r WHERE r.socialId "
+                + "='" + socialId + "'" , Refugee.class);
+        Refugee l = q1.getSingleResult();
+        em.close();
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("EditRefugee.fxml"));
+            try{
+                Loader.load();
+            }catch(IOException ex){
+                System.out.println(ex);
+            }
+            EditRefugeeController erc = Loader.getController();
+            erc.setR(l);
+            erc.setRc(this);
+            Parent p = Loader.getRoot();
+            Stage s = new Stage();
+            s.setScene(new Scene(p));
+            erc.setS(s);
+            s.show();
+            refugeeStage.hide();
+    }
+    
+    
     public void setColumns() {
         
         TableColumn name = new TableColumn("First Name");
@@ -102,6 +134,7 @@ public class RefugeeController {
         TableColumn nationality = new TableColumn("Nationality");
         TableColumn campName = new TableColumn("Camp Name");
         TableColumn tentName = new TableColumn("Tent Name");
+        TableColumn socialId = new TableColumn("Social ID");
         TableColumn gender = new TableColumn("Gender");
         TableColumn alive = new TableColumn("Alive");
         
@@ -110,23 +143,29 @@ public class RefugeeController {
         nationality.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("nation"));
         campName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("campName"));
         tentName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("tentName"));
+        socialId.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("socialId"));
         gender.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("gender"));
         alive.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("alive"));
         
+        
         refugeesTable.getColumns().clear();
-        refugeesTable.getColumns ().addAll(name, lastName, nationality,campName,tentName,gender,alive);
+        refugeesTable.getColumns ().addAll(name, lastName, nationality,campName,tentName,socialId,gender,alive);
         refugeesTable.setItems(refugees);
     }
    public String findCampName(Refugee r) {
         int campId = r.getCampId();
-        TypedQuery<CampSite> q1 = LoginController.dbConnection.getEm().createQuery("SELECT c FROM CampSite c WHERE c.id = '" + campId + "'", CampSite.class);
+        EntityManager em = LoginController.dbConnection.newEntityManager();
+        TypedQuery<CampSite> q1 = em.createQuery("SELECT c FROM CampSite c WHERE c.id = '" + campId + "'", CampSite.class);
         CampSite c = q1.getSingleResult();
+        em.close();
         return c.getLocation()+"/"+c.getName();
     }
     public String findTentName(Refugee r) {
         int tentId = r.getTentId();
-        TypedQuery<Tent> q1 = LoginController.dbConnection.getEm().createQuery("SELECT t FROM Tent t WHERE t.id ='" + tentId + "'", Tent.class);
+        EntityManager em = LoginController.dbConnection.newEntityManager();
+        TypedQuery<Tent> q1 = em.createQuery("SELECT t FROM Tent t WHERE t.id ='" + tentId + "'", Tent.class);
         Tent t = q1.getSingleResult();
+        em.close();
         return t.getDescription();
     }
 

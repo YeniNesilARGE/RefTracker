@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import tableObjects.RefugeeTable;
 
@@ -105,20 +106,21 @@ public class AddRefugeeController {
         r.setRace(raceText.getText());
         r.setNationality(natiText.getText());
         r.setSocialId(socialText.getText());
-        r.setTentId(tId);
-        r.setCampId(cId);
+        r.setTentId(getcId());
+        r.setCampId(gettId());
         r.setIsAlive(1);
         r.setIsStay(1);
+        r.setEverTransport(0);
         if (famaleRadio.isSelected()) {
             r.setGender(1);
         } else {
             r.setGender(0);
         }
-
-        LoginController.dbConnection.getEm().persist(r);
-        LoginController.dbConnection.getEm().getTransaction().commit();
-
-        s.close();
+        EntityManager em = LoginController.dbConnection.newEntityManager();
+        em.persist(r);
+        em.getTransaction().commit();
+        em.close();
+        s.hide();
 
         TentsController tc = new TentsController();
         tc.findClicked(event);
