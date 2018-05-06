@@ -11,18 +11,27 @@ package tableObjects;
  */
 public class RefugeeTable {
     
-    String name,surName,nation,campName,tentName,gender,alive;
+    String name,surName,nation,campName,tentName,socialId,gender,alive;
 
-    public RefugeeTable(String name, String surName, String nation, String campName, String tentName, String gender, String alive) {
+    public RefugeeTable(String name, String surName, String nation, String campName, String tentName, String socialId, String gender, String alive) {
         this.name = name;
         this.surName = surName;
         this.nation = nation;
         this.campName = campName;
         this.tentName = tentName;
+        this.socialId = socialId;
         this.gender = gender;
         this.alive = alive;
     }
 
+    
+    public String getSocialId() {
+        return socialId;
+    }
+
+    public void setSocialId(String socialId) {
+        this.socialId = socialId;
+    }
     public String getName() {
         return name;
     }

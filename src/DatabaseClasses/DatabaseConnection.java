@@ -14,16 +14,17 @@ import javax.persistence.Persistence;
 public class DatabaseConnection {
  
     private EntityManagerFactory emf=null;
-    private EntityManager em=null;
     
     public void connDb(){
         emf = Persistence.createEntityManagerFactory("RefTrackerPU");
-        em = emf.createEntityManager();
+    }
+    public EntityManager newEntityManager(){
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+        return em;
     }
     
     public void exitDb(){
-        em.close();
         emf.close();
     }
 
@@ -34,15 +35,5 @@ public class DatabaseConnection {
     public void setEmf(EntityManagerFactory emf) {
         this.emf = emf;
     }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
-    
-    
     
 }
