@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import tableObjects.RefugeeTable;
@@ -28,10 +29,9 @@ public class RefugeeController {
     private Button addRefugeeButton;
     @FXML
     private Button refugeeDetailButton;
-    
     int campId;
     int tentId;
-    
+
     Stage refugeeStage;
 
     public Stage getRefugeeStage() {
@@ -49,7 +49,7 @@ public class RefugeeController {
     public void setTentId(int tentId) {
         this.tentId = tentId;
     }
-    
+
     private ObservableList<RefugeeTable> refugees = FXCollections.observableArrayList();
 
     public ObservableList<RefugeeTable> getRefugees() {
@@ -67,68 +67,75 @@ public class RefugeeController {
     public void setCampId(int campId) {
         this.campId = campId;
     }
-    
+
     //CADIR ID'SI GELIR VE SIGINMACILAR LISTELENIR
     @FXML
     private void addClicked(MouseEvent event) {
-        
+
         FXMLLoader Loader = new FXMLLoader();
         Loader.setLocation(getClass().getResource("AddRefugee.fxml"));
-            try{
-                Loader.load();
-            }catch(IOException ex){
-                System.out.println(ex);
-            }
-            AddRefugeeController arc = Loader.getController();
-            arc.setcId(campId);
-            arc.settId(tentId);
-            arc.setRc(this);
-            Parent p = Loader.getRoot();
-            Stage s = new Stage();
-            s.setScene(new Scene(p));
-            arc.setS(s);
-            s.show();
-            refugeeStage.close();
+        try {
+            Loader.load();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        AddRefugeeController arc = Loader.getController();
+        arc.setcId(campId);
+        arc.settId(tentId);
+        arc.setRc(this);
+        Parent p = Loader.getRoot();
+        Stage s = new Stage();
+        s.setScene(new Scene(p));
+        arc.setS(s);
+        s.show();
+        s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+              TentsController tc = new TentsController();
+              tc.findClicked(event);
+          }
+        });
+        refugeeStage.close();
     }
 
-    @FXML
-    private void detailClicked(MouseEvent event) {
-        RefugeeTable rt = refugeesTable.getSelectionModel().getSelectedItem();
-        System.out.println(rt.getName()+ "--" + rt.getSurName());
-    }
-
+    
     @FXML
     private void editRef(MouseEvent event) {
-        
+
         RefugeeTable rt = refugeesTable.getSelectionModel().getSelectedItem();
-        System.out.println(rt.getName()+ "--" + rt.getSurName());
-        String socialId = rt.getSocialId(); 
+        System.out.println(rt.getName() + "--" + rt.getSurName());
+        String socialId = rt.getSocialId();
         EntityManager em = LoginController.dbConnection.newEntityManager();
         TypedQuery<Refugee> q1 = em.createQuery("SELECT r FROM Refugee r WHERE r.socialId "
-                + "='" + socialId + "'" , Refugee.class);
+                + "='" + socialId + "'", Refugee.class);
         Refugee l = q1.getSingleResult();
         em.close();
         FXMLLoader Loader = new FXMLLoader();
         Loader.setLocation(getClass().getResource("EditRefugee.fxml"));
-            try{
-                Loader.load();
-            }catch(IOException ex){
-                System.out.println(ex);
-            }
-            EditRefugeeController erc = Loader.getController();
-            erc.setR(l);
-            erc.setRc(this);
-            Parent p = Loader.getRoot();
-            Stage s = new Stage();
-            s.setScene(new Scene(p));
-            erc.setS(s);
-            s.show();
-            refugeeStage.hide();
+        try {
+            Loader.load();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        EditRefugeeController erc = Loader.getController();
+        erc.setR(l);
+        erc.setRc(this);
+        erc.init();
+        Parent p = Loader.getRoot();
+        Stage s = new Stage();
+        s.setScene(new Scene(p));
+        erc.setS(s);
+        s.show();
+        s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+              TentsController tc = new TentsController();
+              tc.findClicked(event);
+          }
+        });
+        refugeeStage.close();
     }
-    
-    
+
     public void setColumns() {
-        
+
         TableColumn name = new TableColumn("First Name");
         TableColumn lastName = new TableColumn("Last Name");
         TableColumn nationality = new TableColumn("Nationality");
@@ -137,29 +144,30 @@ public class RefugeeController {
         TableColumn socialId = new TableColumn("Social ID");
         TableColumn gender = new TableColumn("Gender");
         TableColumn alive = new TableColumn("Alive");
-        
-        name.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("name"));
-        lastName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("surName"));
-        nationality.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("nation"));
-        campName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("campName"));
-        tentName.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("tentName"));
-        socialId.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("socialId"));
-        gender.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("gender"));
-        alive.setCellValueFactory(new PropertyValueFactory<RefugeeTable,String>("alive"));
-        
-        
+
+        name.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("name"));
+        lastName.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("surName"));
+        nationality.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("nation"));
+        campName.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("campName"));
+        tentName.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("tentName"));
+        socialId.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("socialId"));
+        gender.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("gender"));
+        alive.setCellValueFactory(new PropertyValueFactory<RefugeeTable, String>("alive"));
+
         refugeesTable.getColumns().clear();
-        refugeesTable.getColumns ().addAll(name, lastName, nationality,campName,tentName,socialId,gender,alive);
+        refugeesTable.getColumns().addAll(name, lastName, nationality, campName, tentName, socialId, gender, alive);
         refugeesTable.setItems(refugees);
     }
-   public String findCampName(Refugee r) {
+
+    public String findCampName(Refugee r) {
         int campId = r.getCampId();
         EntityManager em = LoginController.dbConnection.newEntityManager();
         TypedQuery<CampSite> q1 = em.createQuery("SELECT c FROM CampSite c WHERE c.id = '" + campId + "'", CampSite.class);
         CampSite c = q1.getSingleResult();
         em.close();
-        return c.getLocation()+"/"+c.getName();
+        return c.getLocation() + "/" + c.getName();
     }
+
     public String findTentName(Refugee r) {
         int tentId = r.getTentId();
         EntityManager em = LoginController.dbConnection.newEntityManager();
@@ -170,17 +178,19 @@ public class RefugeeController {
     }
 
     public String findGender(Refugee r) {
-        if(r.getGender()==0)
+        if (r.getGender() == 0) {
             return "Male";
-        else
+        } else {
             return "Female";
+        }
     }
 
     public String findIsAlive(Refugee r) {
-        if(r.getIsAlive()==0)
+        if (r.getIsAlive() == 0) {
             return "Dead";
-        else
+        } else {
             return "Alive";
+        }
     }
 
 }

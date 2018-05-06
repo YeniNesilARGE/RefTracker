@@ -34,30 +34,28 @@ public class LoginController {
     @FXML
     private void mouseClicked(MouseEvent event) {
         try {
-            
+
             dbConnection.connDb();
             EntityManager em = LoginController.dbConnection.newEntityManager();
-            TypedQuery<Users> q1 = em.createQuery("SELECT u FROM Users u",Users.class);
-            List<Users> l =  q1.getResultList();
-            
-            
+            TypedQuery<Users> q1 = em.createQuery("SELECT u FROM Users u", Users.class);
+            List<Users> l = q1.getResultList();
+
             System.out.println("DB ye baglandim");
             String userName = uId.getText();
             String pass = uPass.getText();
             for (int i = 0; i < l.size(); i++) {
-            
-            if (userName.equals((String)l.get(i).getUsername()) && pass.equals((String)l.get(i).getPass())){
+
+                if (userName.equals((String) l.get(i).getUsername()) && pass.equals((String) l.get(i).getPass())) {
                     label.setText("Giriş Başarılı");
                     sceneTransition("Tents.fxml");
                     break;
                 }
             }
             em.close();
-                
+
         } catch (Exception ex) {
             System.out.println("DB YE BAGLANAMADIM" + ex);
         }
-
     }
 
     public DatabaseConnection getDbConnection() {
@@ -69,7 +67,7 @@ public class LoginController {
     }
 
     public void sceneTransition(String sceneFxml) {
-        
+
         Stage stage = Login.stage;
         try {
             FXMLLoader loader = new FXMLLoader();
