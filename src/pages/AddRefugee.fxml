@@ -27,5 +27,6 @@
       </RadioButton>
       <RadioButton fx:id="famaleRadio" layoutX="164.0" layoutY="160.0" mnemonicParsing="false" text="Female" toggleGroup="$a" />
       <Button fx:id="addRefuge" layoutX="110.0" layoutY="231.0" mnemonicParsing="false" onMouseClicked="#addClicked" text="Add Refuge" />
+      <Label fx:id="socialLabel" layoutX="261.0" layoutY="191.0" prefHeight="17.0" prefWidth="167.0" />
    </children>
 </AnchorPane>

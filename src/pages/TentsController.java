@@ -34,8 +34,9 @@ public class TentsController {
     @FXML
     private Label tentTitle = new Label();
 
-    int campID;
-    int tentId2;
+    static int campID;
+    static int tentId;
+    static int tentId2;
 
     public int getTentId2() {
         return tentId2;
@@ -65,7 +66,10 @@ public class TentsController {
     @FXML
     public void detailClicked(MouseEvent event) {
         try {
-
+            campID = getCampID();
+            if (findTentId() != -1) {
+                tentId = findTentId();
+            }
             FXMLLoader Loader = new FXMLLoader();
             Loader.setLocation(getClass().getResource("Refugee.fxml"));
             try {
@@ -75,7 +79,9 @@ public class TentsController {
             }
             RefugeeController rc = Loader.getController();
             EntityManager em = LoginController.dbConnection.newEntityManager();
-            TypedQuery<Refugee> q1 = em.createQuery("SELECT r FROM Refugee r WHERE r.campId ='" + getCampID() + "'", Refugee.class);
+            TypedQuery<Refugee> q1 = em.createQuery("SELECT r FROM Refugee r WHERE r.campId ='" + getCampID() + "'AND "
+                    + "r.isStay='" + 1 + "'AND r.tentId='" + findTentId() + "'", Refugee.class);
+
             List<Refugee> l = q1.getResultList();
 
             ObservableList<RefugeeTable> rList = FXCollections.observableArrayList();
