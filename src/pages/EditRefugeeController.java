@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,18 +25,19 @@ import tableObjects.RefugeeTable;
 
 public class EditRefugeeController {
 
-    void init(){
+    void init() {
         nText.setText(r.getName());
         snText.setText(r.getSurname());
         raceText.setText(r.getRace());
         natiText.setText(r.getNationality());
-        if(r.getGender()==0)
+        if (r.getGender() == 0) {
             getMaleRadio().selectedProperty();
-        else
+        } else {
             getFamaleRadio().selectedProperty();
+        }
         socialText.setText(r.getSocialId());
     }
-    
+
     Refugee r;
 
     public Refugee getR() {
@@ -45,9 +47,12 @@ public class EditRefugeeController {
     public void setR(Refugee r) {
         this.r = r;
     }
-    
+
     @FXML
     TextField nText;
+
+    @FXML
+    Label socialLbl;
 
     @FXML
     TextField snText;
@@ -186,33 +191,40 @@ public class EditRefugeeController {
 
         EntityManager em = LoginController.dbConnection.newEntityManager();
         Refugee rr = em.find(Refugee.class, getR().getId());
-        
+
         rr.setName(nText.getText());
         rr.setSurname(snText.getText());
         rr.setRace(raceText.getText());
         rr.setNationality(natiText.getText());
-        rr.setSocialId(socialText.getText());
-        rr.setTentId(getR().getTentId());
-        rr.setCampId(getR().getCampId());
-        rr.setIsAlive(1);
-        rr.setIsStay(1);
-        rr.setEverTransport(0);
-        if (famaleRadio.isSelected()) {
-            rr.setGender(1);
+
+        EntityManager em2 = LoginController.dbConnection.newEntityManager();
+        TypedQuery<Refugee> q2 = em2.createQuery("SELECT r FROM Refugee r WHERE r.socialId ='" + socialText.getText() + "'", Refugee.class);
+        List<Refugee> rL = q2.getResultList();
+        em2.close();
+        if (!(rL.isEmpty()) && (rL.get(0).getSocialId().equals(socialText.getText()))) {
+            socialLbl.setText("Used by someone else");
         } else {
-            rr.setGender(0);
+            rr.setTentId(getR().getTentId());
+            rr.setCampId(getR().getCampId());
+            rr.setIsAlive(1);
+            rr.setIsStay(1);
+            rr.setSocialId(socialText.getText());
+            rr.setEverTransport(0);
+            if (famaleRadio.isSelected()) {
+                rr.setGender(1);
+            } else {
+                rr.setGender(0);
+            }
+            em.persist(rr);
+            em.getTransaction().commit();
+            em.close();
+            s.hide();
+
+            TentsController tc = new TentsController();
+            tc.setCampID(getR().getCampId());
+            tc.setTentId2(getR().getTentId());
+            tc.detailClicked(event);
         }
-        
-        em.persist(rr);
-        em.getTransaction().commit();
-        em.close();
-        s.hide();
-
-        TentsController tc = new TentsController();
-        tc.setCampID(getR().getCampId());
-        tc.setTentId2(getR().getTentId());
-        tc.detailClicked(event);
-
     }
 
 }

@@ -1,14 +1,17 @@
 package pages;
 
 import DatabaseClasses.*;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 public class AddRefugeeController {
 
@@ -35,6 +38,9 @@ public class AddRefugeeController {
 
     @FXML
     Button addRefuge;
+
+    @FXML
+    Label socialLabel;
 
     Stage s;
     Stage stageRefugee;
@@ -93,28 +99,36 @@ public class AddRefugeeController {
         r.setSurname(snText.getText());
         r.setRace(raceText.getText());
         r.setNationality(natiText.getText());
-        r.setSocialId(socialText.getText());
-        r.setTentId(gettId());
-        r.setCampId(getcId());
-        r.setIsAlive(1);
-        r.setIsStay(1);
-        r.setEverTransport(0);
-        if (famaleRadio.isSelected()) {
-            r.setGender(1);
+
+        EntityManager em2 = LoginController.dbConnection.newEntityManager();
+        TypedQuery<Refugee> q2 = em2.createQuery("SELECT r FROM Refugee r WHERE r.socialId ='" + socialText.getText() + "'", Refugee.class);
+        List<Refugee> rL = q2.getResultList();
+        if (!(rL.isEmpty())) {
+            socialLabel.setText("Used by someone else");
         } else {
-            r.setGender(0);
+            r.setSocialId(socialText.getText());
+            r.setTentId(gettId());
+            r.setCampId(getcId());
+            r.setIsAlive(1);
+            r.setIsStay(1);
+            r.setEverTransport(0);
+            if (famaleRadio.isSelected()) {
+                r.setGender(1);
+            } else {
+                r.setGender(0);
+            }
+            EntityManager em = LoginController.dbConnection.newEntityManager();
+            em.persist(r);
+            em.getTransaction().commit();
+            em.close();
+            s.hide();
+
+            TentsController tc = new TentsController();
+            tc.setCampID(getcId());
+            tc.setTentId2(gettId());
+            TentsController.tentId2 = gettId();
+            tc.detailClicked(event);
         }
-        EntityManager em = LoginController.dbConnection.newEntityManager();
-        em.persist(r);
-        em.getTransaction().commit();
-        em.close();
-        s.hide();
-
-        TentsController tc = new TentsController();
-        tc.setCampID(getcId());
-        tc.setTentId2(gettId());
-        tc.detailClicked(event);
-
     }
 
 }

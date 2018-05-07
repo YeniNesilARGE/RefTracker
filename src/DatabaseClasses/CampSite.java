@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "CampSite.findByName", query = "SELECT c FROM CampSite c WHERE c.name = :name")
     , @NamedQuery(name = "CampSite.findByLocation", query = "SELECT c FROM CampSite c WHERE c.location = :location")
     , @NamedQuery(name = "CampSite.findByCampType", query = "SELECT c FROM CampSite c WHERE c.campType = :campType")
-    , @NamedQuery(name = "CampSite.findByDate", query = "SELECT c FROM CampSite c WHERE c.date = :date")})
+    , @NamedQuery(name = "CampSite.findByDate", query = "SELECT c FROM CampSite c WHERE c.date = :date")
+    , @NamedQuery(name = "CampSite.findByRequirement", query = "SELECT c FROM CampSite c WHERE c.requirement = :requirement")})
 public class CampSite implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,6 +56,9 @@ public class CampSite implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    @Basic(optional = false)
+    @Column(name = "requirement")
+    private String requirement;
 
     public CampSite() {
     }
@@ -63,12 +67,13 @@ public class CampSite implements Serializable {
         this.id = id;
     }
 
-    public CampSite(Integer id, String name, String location, int campType, Date date) {
+    public CampSite(Integer id, String name, String location, int campType, Date date, String requirement) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.campType = campType;
         this.date = date;
+        this.requirement = requirement;
     }
 
     public Integer getId() {
@@ -109,6 +114,14 @@ public class CampSite implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(String requirement) {
+        this.requirement = requirement;
     }
 
     @Override
