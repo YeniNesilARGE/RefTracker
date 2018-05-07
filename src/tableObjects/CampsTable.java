@@ -12,22 +12,37 @@ import javafx.beans.property.StringProperty;
  * @author Furkan
  */
 public class CampsTable {
-    String name, location;
-    
-    public CampsTable(String name, String location){
+
+    String name, location, campType;
+
+    public CampsTable(String name, String location, String campType) {
         this.name = name;
         this.location = location;
+        this.campType = campType;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public void setName(String n){
-        this.name = n;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getLocation(){
+
+    public String getLocation() {
         return location;
     }
-    public void setLocation(String l){
-        this.location = l;
+
+    public void setLocation(String surName) {
+        this.location = location;
     }
+
+    public void setCampType(String campType) {
+        this.campType = campType;
+    }
+
+    public String getCampType() {
+        return campType;
+    }
+
 }

@@ -94,8 +94,8 @@ public class AddRefugeeController {
         r.setRace(raceText.getText());
         r.setNationality(natiText.getText());
         r.setSocialId(socialText.getText());
-        r.setTentId(getcId());
-        r.setCampId(gettId());
+        r.setTentId(gettId());
+        r.setCampId(getcId());
         r.setIsAlive(1);
         r.setIsStay(1);
         r.setEverTransport(0);
@@ -111,7 +111,9 @@ public class AddRefugeeController {
         s.hide();
 
         TentsController tc = new TentsController();
-        tc.findClicked(event);
+        tc.setCampID(getcId());
+        tc.setTentId2(gettId());
+        tc.detailClicked(event);
 
     }
 
