@@ -209,7 +209,9 @@ public class EditRefugeeController {
         s.hide();
 
         TentsController tc = new TentsController();
-        tc.findClicked(event);
+        tc.setCampID(getR().getCampId());
+        tc.setTentId2(getR().getTentId());
+        tc.detailClicked(event);
 
     }
 

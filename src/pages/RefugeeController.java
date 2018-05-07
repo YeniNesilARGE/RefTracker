@@ -91,7 +91,7 @@ public class RefugeeController {
         s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
           public void handle(WindowEvent we) {
               TentsController tc = new TentsController();
-              tc.findClicked(event);
+              tc.detailClicked(event);
           }
         });
         refugeeStage.close();
@@ -128,7 +128,7 @@ public class RefugeeController {
         s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
           public void handle(WindowEvent we) {
               TentsController tc = new TentsController();
-              tc.findClicked(event);
+              tc.detailClicked(event);
           }
         });
         refugeeStage.close();
@@ -194,7 +194,3 @@ public class RefugeeController {
     }
 
 }
-
-
-/*LoginController lg = new LoginController();
-      lg.sceneTransition("Login.fxml");*/
