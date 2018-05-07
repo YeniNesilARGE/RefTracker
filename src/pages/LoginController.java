@@ -78,73 +78,73 @@ public class LoginController {
                     label.setText("Giriş Başarılı");
                     //If he is admin
                     if (userType == 1) {
-                        FXMLLoader Loader = new FXMLLoader();
-                        Loader.setLocation(getClass().getResource("Camps.fxml"));
-                        try {
-                            Loader.load();
-                        } catch (IOException ex) {
-                            System.out.println(ex);
-                        }
-                        CampsController cc = Loader.getController();
-
-                        EntityManager em2 = dbConnection.newEntityManager();
-                        TypedQuery<CampSite> q2 = em2.createQuery("SELECT c FROM CampSite c", CampSite.class);
-                        List<CampSite> l2 = q2.getResultList();
-
-                        ObservableList<CampsTable> cList = FXCollections.observableArrayList();
-
-                        for (int k = 0; k < l2.size(); k++) {
-                            String namee = l2.get(k).getName();
-                            String locationn = l2.get(k).getLocation();
-                            String campTypee = cc.findCampType(l2.get(k));
-
-                            cList.add(new CampsTable(namee, locationn, campTypee));
-                        }
-                        em2.close();
-                        cc.setCampSites(cList);
-                        cc.setColumns();
-                        Parent p = Loader.getRoot();
-                        Stage s = new Stage();
-                        s.setTitle("All CampSites");
-                        s.setScene(new Scene(p));
-                        s.show();
-                        Login.stage.hide();
-                        //sceneTransition("Camps.fxml");
-                    } else if (userType == 2) { //or he is a personel
 //                        FXMLLoader Loader = new FXMLLoader();
-//                        Loader.setLocation(getClass().getResource("Tents.fxml"));
+//                        Loader.setLocation(getClass().getResource("Camps.fxml"));
 //                        try {
 //                            Loader.load();
 //                        } catch (IOException ex) {
 //                            System.out.println(ex);
 //                        }
-//                        TentsController tc = Loader.getController();
+//                        CampsController cc = Loader.getController();
+//
 //                        EntityManager em2 = dbConnection.newEntityManager();
-//                        TypedQuery<Tent> q3 = em2.createQuery("SELECT t FROM Tent t", Tent.class);
-//                        List<Tent> l3 = q3.getResultList();
+//                        TypedQuery<CampSite> q2 = em2.createQuery("SELECT c FROM CampSite c", CampSite.class);
+//                        List<CampSite> l2 = q2.getResultList();
 //
-//                        ObservableList<TentTable> tList = FXCollections.observableArrayList();
+//                        ObservableList<CampsTable> cList = FXCollections.observableArrayList();
 //
-//                        for (int j = 0; j < l3.size(); j++) {
-//                            String tentType = tc.findTentType(l3.get(j));
-//                            String description = l3.get(j).getDescription();
-//                            String tentId = l3.get(j).getId() + "";
-//                            tList.add(new TentTable(tentId, tentType, description));
+//                        for (int k = 0; k < l2.size(); k++) {
+//                            String namee = l2.get(k).getName();
+//                            String locationn = l2.get(k).getLocation();
+//                            String campTypee = cc.findCampType(l2.get(k));
+//
+//                            cList.add(new CampsTable(namee, locationn, campTypee));
 //                        }
 //                        em2.close();
-//
-//                        tc.setTents(tList);
-//                        tc.setColumns();
+//                        cc.setCampSites(cList);
+//                        cc.setColumns();
 //                        Parent p = Loader.getRoot();
 //                        Stage s = new Stage();
-//                        String campNamesi = tc.findCampName(userCampID);
-//                        tc.setCampID(userCampID);
-//                        s.setTitle(campNamesi + " Campsite");
-//                        tc.setTentTitle("All Tents in " + campNamesi + " Campsite");
+//                        s.setTitle("All CampSites");
 //                        s.setScene(new Scene(p));
 //                        s.show();
-//                        Login.stage.close();
-                        sceneTransition("Tents.fxml");
+//                        Login.stage.hide();
+                        sceneTransition("Camps.fxml");
+                    } else if (userType == 2) { //or he is a personel
+                        FXMLLoader Loader = new FXMLLoader();
+                        Loader.setLocation(getClass().getResource("Tents.fxml"));
+                        try {
+                            Loader.load();
+                        } catch (IOException ex) {
+                            System.out.println(ex);
+                        }
+                        TentsController tc = Loader.getController();
+                        EntityManager em2 = dbConnection.newEntityManager();
+                        TypedQuery<Tent> q3 = em2.createQuery("SELECT t FROM Tent t", Tent.class);
+                        List<Tent> l3 = q3.getResultList();
+
+                        ObservableList<TentTable> tList = FXCollections.observableArrayList();
+
+                        for (int j = 0; j < l3.size(); j++) {
+                            String tentType = tc.findTentType(l3.get(j));
+                            String description = l3.get(j).getDescription();
+                            String tentId = l3.get(j).getId() + "";
+                            tList.add(new TentTable(tentId, tentType, description));
+                        }
+                        em2.close();
+
+                        tc.setTents(tList);
+                        tc.setColumns();
+                        Parent p = Loader.getRoot();
+                        Stage s = new Stage();
+                        String campNamesi = tc.findCampName(userCampID);
+                        tc.setCampID(userCampID);
+                        s.setTitle(campNamesi + " Campsite");
+                        tc.setTentTitle("All Tents in " + campNamesi + " Campsite");
+                        s.setScene(new Scene(p));
+                        s.show();
+                        Login.stage.close();
+                        //sceneTransition("Tents.fxml");
                     }
                     break;
                 }
