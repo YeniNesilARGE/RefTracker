@@ -1,12 +1,14 @@
 package pages;
 
 import DatabaseClasses.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -15,6 +17,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import static pages.LoginController.dbConnection;
@@ -34,7 +38,20 @@ public class CampsController implements Initializable {
 
     @FXML
     private void addClicked(MouseEvent event) {
-        //add camp
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("AddCamps.fxml"));
+        try {
+            Loader.load();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        AddCampsController acc = Loader.getController();
+
+        Parent p = Loader.getRoot();
+        Stage s = new Stage();
+        s.setScene(new Scene(p));
+        acc.setS(s);
+        s.show();
     }
 
     @FXML
@@ -57,12 +74,13 @@ public class CampsController implements Initializable {
         List<CampSite> csList = tq.getResultList();
         for (int i = 0; i < csList.size(); i++) {
             CampSite c = csList.get(i);
-            campSites.add(new CampsTable(c.getName(), c.getLocation(), findCampType(c)));
+            campSites.add(new CampsTable(c.getName(), c.getLocation(), findCampType(c), c.getRequirement()));
         }
-        setColumns();
+
         em.close();
-        
+        setColumns();
         campsTable.setItems(campSites);
+
     }
 
     public void setCampSites(ObservableList<CampsTable> campSites) {
@@ -78,13 +96,15 @@ public class CampsController implements Initializable {
         TableColumn name = new TableColumn("Name");
         TableColumn location = new TableColumn("Location");
         TableColumn campType = new TableColumn("Camp Type");
+        TableColumn requirement = new TableColumn("Requirement");
 
         name.setCellValueFactory(new PropertyValueFactory<CampsTable, String>("name"));
         location.setCellValueFactory(new PropertyValueFactory<CampsTable, String>("location"));
         campType.setCellValueFactory(new PropertyValueFactory<CampsTable, String>("campType"));
+        requirement.setCellValueFactory(new PropertyValueFactory<CampsTable, String>("requirement"));
 
         campsTable.getColumns().clear();
-        campsTable.getColumns().addAll(name, location, campType);
+        campsTable.getColumns().addAll(name, location, campType, requirement);
         campsTable.setItems(campSites);
     }
 

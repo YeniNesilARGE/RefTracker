@@ -2,9 +2,7 @@ package pages;
 
 import DatabaseClasses.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

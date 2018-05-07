@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="217.0" prefWidth="377.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pages.AddCampsController">
+   <children>
+      <Label layoutX="32.0" layoutY="38.0" prefHeight="17.0" prefWidth="108.0" text="Camp Location" />
+      <Label layoutX="32.0" layoutY="68.0" prefHeight="17.0" prefWidth="108.0" text="Camp Name" />
+      <Label layoutX="32.0" layoutY="99.0" prefHeight="17.0" prefWidth="108.0" text="Camp Type" />
+      <TextField fx:id="campLoc" layoutX="134.0" layoutY="34.0" />
+      <TextField fx:id="campName" layoutX="134.0" layoutY="64.0" />
+      <TextField fx:id="campType" layoutX="134.0" layoutY="95.0" />
+      <Button layoutX="163.0" layoutY="134.0" mnemonicParsing="false" onMouseClicked="#addCamp" text="Add Camp" />
+   </children>
+</AnchorPane>
