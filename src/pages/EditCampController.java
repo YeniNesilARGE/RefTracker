@@ -1,35 +1,45 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package pages;
 
-import DatabaseClasses.*;
+import DatabaseClasses.CampSite;
+import DatabaseClasses.CampType;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import static pages.LoginController.dbConnection;
 
-import DatabaseClasses.CampType;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import tableObjects.CampsTable;
-
-public class AddCampsController implements Initializable{
+/**
+ * FXML Controller class
+ *
+ * @author Furkan
+ */
+public class EditCampController implements Initializable {
     
     Stage s;
     
-    public Stage getS() {
-        return s;
-    }
+    CampSite cs;
     
     public void setS(Stage s) {
         this.s = s;
+    }
+    public void setCampSite(CampSite cs){
+        this.cs = cs;
+        campName.setText(cs.getName());
+        campLoc.setText(cs.getLocation());
     }
     
     @FXML
@@ -44,29 +54,30 @@ public class AddCampsController implements Initializable{
     private EntityManager em;
     
     @FXML
-    private void addCamp(MouseEvent event) {
-        
+    private void editCamp(MouseEvent e){
         em = LoginController.dbConnection.newEntityManager();
-        TypedQuery<CampType> q1 = em.createQuery("SELECT t FROM CampType t WHERE t.name ='" + campType.getValue().toString() + "'", CampType.class);
+        CampSite c = em.find(CampSite.class, cs.getId());
+        
+        
+        EntityManager em2 = LoginController.dbConnection.newEntityManager();
+        TypedQuery<CampType> q1 = em2.createQuery("SELECT t FROM CampType t WHERE t.name ='" + campType.getValue().toString() + "'", CampType.class);
         List<CampType> l = q1.getResultList();
         
-        CampSite c = new CampSite();
         c.setCampType(l.get(0).getId());
         c.setLocation(campLoc.getText());
         c.setName(campName.getText());
         c.setRequirement("requirement");
+        em2.close();
         
-       
         em.persist(c);
         em.getTransaction().commit();
         em.close();
-        s.close();
+        s.hide();
         LoginController lc = new LoginController();
         lc.sceneTransition("Camps.fxml");
     }
-
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL url, ResourceBundle rb) {
         try{
         // Starting connection
         em = LoginController.dbConnection.newEntityManager();
@@ -82,5 +93,6 @@ public class AddCampsController implements Initializable{
         }catch(Exception ex){
             ex.printStackTrace();
         }
-    }
+    }    
+    
 }
