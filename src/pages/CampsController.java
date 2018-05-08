@@ -74,7 +74,7 @@ public class CampsController implements Initializable {
         List<CampSite> csList = tq.getResultList();
         for (int i = 0; i < csList.size(); i++) {
             CampSite c = csList.get(i);
-            campSites.add(new CampsTable(c.getName(), c.getLocation(), findCampType(c), c.getRequirement()));
+            campSites.add(new CampsTable(c.getName(), c.getLocation(), findCampType(c)));
         }
 
         em.close();

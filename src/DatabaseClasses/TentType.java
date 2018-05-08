@@ -54,6 +54,12 @@ public class TentType implements Serializable {
         this.id = id;
         this.type = type;
     }
+    
+    public TentType(Integer id, String type, int capasity) {
+        this.id = id;
+        this.type = type;
+        this.capasity = capasity;
+    }
 
     public Integer getId() {
         return id;

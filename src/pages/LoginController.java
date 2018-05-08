@@ -119,32 +119,32 @@ public class LoginController {
                             System.out.println(ex);
                         }
                         TentsController tc = Loader.getController();
-                        EntityManager em2 = dbConnection.newEntityManager();
-                        TypedQuery<Tent> q3 = em2.createQuery("SELECT t FROM Tent t", Tent.class);
-                        List<Tent> l3 = q3.getResultList();
-
-                        ObservableList<TentTable> tList = FXCollections.observableArrayList();
-
-                        for (int j = 0; j < l3.size(); j++) {
-                            String tentType = tc.findTentType(l3.get(j));
-                            String description = l3.get(j).getDescription();
-                            String tentId = l3.get(j).getId() + "";
-                            tList.add(new TentTable(tentId, tentType, description));
-                        }
-                        em2.close();
-
-                        tc.setTents(tList);
-                        tc.setColumns();
-                        Parent p = Loader.getRoot();
-                        Stage s = new Stage();
-                        String campNamesi = tc.findCampName(userCampID);
+//                        EntityManager em2 = dbConnection.newEntityManager();
+//                        TypedQuery<Tent> q3 = em2.createQuery("SELECT t FROM Tent t", Tent.class);
+//                        List<Tent> l3 = q3.getResultList();
+//
+//                        ObservableList<TentTable> tList = FXCollections.observableArrayList();
+//
+//                        for (int j = 0; j < l3.size(); j++) {
+//                            String tentType = tc.findTentType(l3.get(j));
+//                            String description = l3.get(j).getDescription();
+//                            String tentId = l3.get(j).getId() + "";
+//                            tList.add(new TentTable(tentId, tentType, description));
+//                        }
+//                        em2.close();
+//
+//                        tc.setTents(tList);
+//                        tc.setColumns();
+//                        Parent p = Loader.getRoot();
+//                        Stage s = tc.getTentStage();
+//                        String campNamesi = tc.findCampName(userCampID);
                         tc.setCampID(userCampID);
-                        s.setTitle(campNamesi + " Campsite");
-                        tc.setTentTitle("All Tents in " + campNamesi + " Campsite");
-                        s.setScene(new Scene(p));
-                        s.show();
-                        Login.stage.close();
-                        //sceneTransition("Tents.fxml");
+//                        s.setTitle(campNamesi + " Campsite");
+//                        tc.setTentTitle("All Tents in " + campNamesi + " Campsite");
+//                        s.setScene(new Scene(p));
+//                        s.show();
+//                        Login.stage.close();
+                        sceneTransition("Tents.fxml");
                     }
                     break;
                 }
