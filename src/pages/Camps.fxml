@@ -19,8 +19,9 @@
           <TableColumn prefWidth="204.0" text="Location" />
         </columns>
       </TableView>
-      <Button fx:id="addCampButton" layoutX="463.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addClicked" text="Add Camp" />
-      <Button fx:id="campDetailButton" layoutX="367.0" layoutY="354.0" mnemonicParsing="false" onMouseClicked="#detailClicked" text="Detail" />
-      <Button fx:id="findCampButton" layoutX="463.0" layoutY="75.0" mnemonicParsing="false" onMouseClicked="#findClicked" prefHeight="25.0" prefWidth="73.0" text="Find Camp" />
+      <Button fx:id="addCampButton" layoutX="463.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addClicked" prefHeight="25.0" prefWidth="87.0" text="Add Camp" />
+      <Button fx:id="campEditButton" layoutX="463.0" layoutY="115.0" mnemonicParsing="false" onMouseClicked="#editClicked" prefHeight="25.0" prefWidth="87.0" text="Edit Camp" />
+      <Button fx:id="deleteCampButton" layoutX="463.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#deleteClicked" prefHeight="25.0" prefWidth="87.0" text="Delete Camp" />
+      <Button fx:id="campDetailButton" layoutX="463.0" layoutY="315.0" mnemonicParsing="false" onAction="#detailClicked" prefHeight="25.0" prefWidth="87.0" text="Camp Detail" />
    </children>
 </AnchorPane>
