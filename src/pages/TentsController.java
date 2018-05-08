@@ -2,12 +2,15 @@ package pages;
 
 import DatabaseClasses.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,13 +20,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import tableObjects.CampsTable;
 import tableObjects.RefugeeTable;
 import tableObjects.TentTable;
 
-public class TentsController {
+public class TentsController implements Initializable {
 
     @FXML
     private TableView<TentTable> tentsTable = new TableView<>();
@@ -32,7 +36,19 @@ public class TentsController {
     @FXML
     private Button tentDetailButton;
     @FXML
+    private Button editTentButton;
+    @FXML
     private Label tentTitle = new Label();
+
+    Stage tentStage = new Stage();
+
+    public Stage getTentStage() {
+        return tentStage;
+    }
+
+    public void setTentStage(Stage tentStage) {
+        this.tentStage = tentStage;
+    }
 
     static int campID;
     static int tentId;
@@ -57,10 +73,75 @@ public class TentsController {
     public void setTentTitle(String tentTitle) {
         this.tentTitle.setText(tentTitle);
     }
+    private ObservableList<TentTable> tents = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        String campNamesi = findCampName(campID);
+        setTentTitle("All Tents in " + campNamesi + " Campsite");
+        tents = FXCollections.observableArrayList();
+        EntityManager em = LoginController.dbConnection.newEntityManager();
+        TypedQuery<Tent> tq = em.createQuery("SELECT t FROM Tent t WHERE t.campId='" + campID + "'", Tent.class);
+        List<Tent> l = tq.getResultList();
+        for (int i = 0; i < l.size(); i++) {
+            Tent t = l.get(i);
+            String tentT = findTentType(t);
+            tents.add(new TentTable(t.getId() + "", tentT, t.getDescription()));
+        }
+        em.close();
+        setColumns();
+        tentsTable.setItems(tents);
+    }
 
     @FXML
     private void addClicked(MouseEvent event) {
-        //add camp
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("AddTent.fxml"));
+        try {
+            Loader.load();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        AddTentController atc = Loader.getController();
+        atc.setCampID(campID);
+        Parent p = Loader.getRoot();
+        Stage s = new Stage();
+        s.setScene(new Scene(p));
+        atc.setS(s);
+        s.show();
+        tentStage.hide();
+        s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                tentStage.show();
+            }
+        });
+    }
+
+    @FXML
+    private void editClicked(MouseEvent event) {
+        pages.EditTentController.campID = campID;
+        pages.EditTentController.tentID = findTentId();
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("EditTent.fxml"));
+        try {
+            Loader.load();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        EditTentController etc = Loader.getController();
+//        etc.setTentID(findTentId());
+//        etc.setCampID(campID);
+        Parent p = Loader.getRoot();
+        Stage s = new Stage();
+        s.setScene(new Scene(p));
+        etc.setS(s);
+        s.show();
+        tentStage.hide();
+        s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                tentStage.show();
+            }
+        });
     }
 
     @FXML
@@ -118,12 +199,6 @@ public class TentsController {
             System.out.println("DB YE BAGLANAMADIM" + ex);
         }
     }
-
-    @FXML
-    private void findClicked(MouseEvent event) {
-
-    }
-    private ObservableList<TentTable> tents = FXCollections.observableArrayList();
 
     public void setTents(ObservableList<TentTable> tents) {
         this.tents = tents;

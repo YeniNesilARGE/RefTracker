@@ -20,7 +20,7 @@
       </TableView>
       <Button fx:id="addTentButton" layoutX="443.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addClicked" prefHeight="25.0" prefWidth="100.0" text="Add Tent" />
       <Button fx:id="tentDetailButton" layoutX="367.0" layoutY="354.0" mnemonicParsing="false" onMouseClicked="#detailClicked" text="Detail" />
-      <Button layoutX="443.0" layoutY="78.0" mnemonicParsing="false" onMouseClicked="#findClicked" prefHeight="25.0" prefWidth="100.0" text="Find Tent" />
+      <Button fx:id="editTentButton" layoutX="443.0" layoutY="78.0" mnemonicParsing="false" onMouseClicked="#editClicked" prefHeight="25.0" prefWidth="100.0" text="Edit Tent" />
       <!--<Button layoutX="443.0" layoutY="116.0" mnemonicParsing="false" onMouseClicked="#transferClicked" prefHeight="25.0" prefWidth="100.0" text="Get Transfer" />-->
    </children>
 </AnchorPane>
