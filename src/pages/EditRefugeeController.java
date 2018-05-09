@@ -201,9 +201,7 @@ public class EditRefugeeController {
         TypedQuery<Refugee> q2 = em2.createQuery("SELECT r FROM Refugee r WHERE r.socialId ='" + socialText.getText() + "'", Refugee.class);
         List<Refugee> rL = q2.getResultList();
         em2.close();
-        if (!(rL.isEmpty()) && (rL.get(0).getSocialId().equals(socialText.getText()))) {
-            socialLbl.setText("Used by someone else");
-        } else {
+        if ( (!(rL.isEmpty()) && (rL.get(0).getSocialId().equals(socialText.getText()))) || rL.isEmpty() ) {
             rr.setTentId(getR().getTentId());
             rr.setCampId(getR().getCampId());
             rr.setIsAlive(1);
@@ -219,11 +217,12 @@ public class EditRefugeeController {
             em.getTransaction().commit();
             em.close();
             s.hide();
-
             TentsController tc = new TentsController();
             tc.setCampID(getR().getCampId());
             tc.setTentId2(getR().getTentId());
             tc.detailClicked(event);
+        } else {
+            socialLbl.setText("Used by someone else");
         }
     }
 

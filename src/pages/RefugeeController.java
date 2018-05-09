@@ -136,13 +136,13 @@ public class RefugeeController {
         s.setScene(new Scene(p));
         erc.setS(s);
         s.show();
+        refugeeStage.hide();
         s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                TentsController tc = new TentsController();
-                tc.detailClicked(event);
+                refugeeStage.show();
             }
         });
-        refugeeStage.close();
+        
     }
 
     public ObservableList<RefugeeTable> listTable() {
@@ -262,7 +262,7 @@ public class RefugeeController {
         TypedQuery<Refugee> q1 = em.createQuery("SELECT r FROM Refugee r WHERE r.socialId ='" + socialText.getText() + "'", Refugee.class);
         List<Refugee> r = q1.getResultList();
         if (r.isEmpty()) {
-            searchResultLbl.setText("Fot Found");
+            searchResultLbl.setText("Not Found");
         } else {
             searchResultLbl.setText("Found");
             em.close();
@@ -282,6 +282,15 @@ public class RefugeeController {
             s.setScene(new Scene(p));
             erc.setS(s);
             s.show();
+            refugeeStage.hide();
+            s.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                //TentsController tc = new TentsController();
+                //tc.detailClicked(event);
+                refugeeStage.show();
+            }
+        });
+            
         }
     }
 
